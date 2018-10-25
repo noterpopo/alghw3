@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<stack>
+#include<ctime>
 using namespace std;
 
 int K=4;
@@ -15,6 +16,7 @@ void K1(int **arr);
 int **clone(int **oarr);
 //void KN(int **arr,int n,int ip);
 void KN();
+void KN_y();
 class StepMap
 {
 public:
@@ -48,7 +50,10 @@ int main(int argc, char const *argv[])
     }
 
     stackmap.push(StepMap(0,arr,number));
-    KN();
+    clock_t start_time = clock();
+    KN_y();
+    cout<<"时间为: "<<clock()-start_time<<endl;
+
     cout<<maxp<<endl;
 
 
@@ -446,7 +451,6 @@ void KN()
                         maxp=totalp+lp+rp;
                     }
                 }
-                //delete[] copyarr;
                 swap(arr,i,j,i,j+1);
             }
         }
@@ -472,16 +476,46 @@ void KN()
                         maxp=totalp+up+dp;
                     }
                 }
-                //delete[] copyarr;
                 swap(arr,i,j,i+1,j);
             }
         }
+        delete[] arr;
     }
 
 }
 
+string getString(int **arr,int n)
+{
+    string s="";
+    for(int i=0;i<M;++i)
+    {
+        for(int j=0;j<N;++j)
+        {
+            s+=to_string(arr[i][j]);
+        }
+    }
+    return s+to_string(n);
+
+}
+
+bool check(string s,vector<string> &vs)
+{
+    bool isHave= false;
+    for(int i=0;i<vs.size();++i)
+    {
+        if(vs.at(i)==s)
+        {
+            isHave= true;
+            break;
+        }
+    }
+    return isHave;
+}
+
+
 void KN_y()
 {
+    vector<string> mapVec;
     while(!stackmap.empty())
     {
         int lp=0;
@@ -496,6 +530,14 @@ void KN_y()
         {
             continue;
         }
+        string temp=getString(arr,num);
+        if(!check(temp,mapVec))
+        {
+            mapVec.push_back(temp);
+        } else
+        {
+            continue;
+        }
         for(int i=0;i<M;++i)
         {
             for(int j=0;j<N-1;++j)
@@ -506,6 +548,7 @@ void KN_y()
                 }
                 swap(arr,i,j,i,j+1);
                 int **copyarr=clone(arr);
+                swap(arr,i,j,i,j+1);
                 lp=find(copyarr,i,j,0);
                 rp=find(copyarr,i,j+1,0);
                 if(lp+rp>0)
@@ -517,8 +560,6 @@ void KN_y()
                         maxp=totalp+lp+rp;
                     }
                 }
-                //delete[] copyarr;
-                swap(arr,i,j,i,j+1);
             }
         }
 
@@ -532,6 +573,7 @@ void KN_y()
                 }
                 swap(arr,i,j,i+1,j);
                 int **copyarr=clone(arr);
+                swap(arr,i,j,i+1,j);
                 up=find(copyarr,i,j,0);
                 dp=find(copyarr,i+1,j,0);
                 if(up+dp>0)
@@ -543,10 +585,9 @@ void KN_y()
                         maxp=totalp+up+dp;
                     }
                 }
-                //delete[] copyarr;
-                swap(arr,i,j,i+1,j);
             }
         }
+        delete[] arr;
     }
 
 }
