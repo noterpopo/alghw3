@@ -8,6 +8,7 @@ int K=4;
 int M=8;
 int N=4;
 int maxp=0;
+int tik=0;
 void display(int **arr);
 int  find(int **arr,int posx,int posy,int point);
 vector<int> reset(int **arr);
@@ -45,19 +46,31 @@ int main(int argc, char const *argv[])
     {
         for(int j=0;j<N;++j)
         {
-            cin>>arr[i][j];
+//            int n=rand()%K+1;
+//            arr[i][j]=n;
+                cin>>arr[i][j];
         }
     }
-
+    int **tarr=clone(arr);
+    maxp=0;
     stackmap.push(StepMap(0,arr,number));
     clock_t start_time = clock();
+    KN();
+    cout<<"time: "<<clock()-start_time<<endl;
+    cout<<tik<<endl;
+
+    cout<<" @@@"<<maxp<<endl;
+
+    stackmap.push(StepMap(0,tarr,number));
+    start_time = clock();
+    maxp=0;
     KN_y();
-    cout<<"时间为: "<<clock()-start_time<<endl;
+    cout<<"time: "<<clock()-start_time<<endl;
+    cout<<tik<<endl;
 
-    cout<<maxp<<endl;
+    cout<<" ***"<<maxp<<endl;
 
 
-    delete[] arr;
     return 0;
 }
 
@@ -416,6 +429,7 @@ int **clone(int **oarr)
 // }
 void KN()
 {
+    tik=0;
     while(!stackmap.empty())
     {
         int lp=0;
@@ -430,6 +444,7 @@ void KN()
         {
             continue;
         }
+        tik++;
         for(int i=0;i<M;++i)
         {
             for(int j=0;j<N-1;++j)
@@ -491,7 +506,14 @@ string getString(int **arr,int n)
     {
         for(int j=0;j<N;++j)
         {
-            s+=to_string(arr[i][j]);
+            if(arr[i][j]==0)
+            {
+                s+='0';
+            }
+            else
+            {
+                s+='1';
+            }
         }
     }
     return s+to_string(n);
@@ -512,9 +534,9 @@ bool check(string s,vector<string> &vs)
     return isHave;
 }
 
-
 void KN_y()
 {
+    tik=0;
     vector<string> mapVec;
     while(!stackmap.empty())
     {
@@ -538,6 +560,7 @@ void KN_y()
         {
             continue;
         }
+        tik++;
         for(int i=0;i<M;++i)
         {
             for(int j=0;j<N-1;++j)
